@@ -1,5 +1,7 @@
 package com.example.administrator.animatortest.view;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;;
@@ -18,6 +20,17 @@ class AnimatorTestView extends View {
     private Point mPoint;
     private Paint paint;
     private Point currentPoint;
+    private String color;
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+        paint.setColor(Color.parseColor(color));
+        invalidate();
+    }
 
     public AnimatorTestView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -49,7 +62,11 @@ class AnimatorTestView extends View {
                 invalidate();
             }
         });
-        animator.setDuration(5000);
-        animator.start();
+        ObjectAnimator objectAnimator=ObjectAnimator.ofObject(this,"color",
+                new ColorEvaluator(),"#0000FF", "#FF0000");
+        AnimatorSet animatorSet=new AnimatorSet();
+        animatorSet.play(animator).with(objectAnimator);
+        animatorSet.setDuration(5000);
+        animatorSet.start();
     }
 }
